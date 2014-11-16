@@ -1,4 +1,5 @@
 from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
 import unittest
 
 
@@ -17,13 +18,26 @@ class NewVisitorTest(unittest.TestCase):
 
         # User sees page has title and header about todo lists
         self.assertIn('todo', self.browser.title)
-        self.fail('Finish the test!')
+        header_text = self.browser.find_element_by_tag_name('h1').text
+        self.assertIn('todo', header_text)
 
         # User is invited to enter item to todo list
+        inputbox = self.browser.find_element_by_id('id_new_item')
+        self.assertEqual(inputbox.get_attribute('placeholder'),
+                         'Enter a todo item')
 
         # User adds 'buy X' into a text box
+        inputbox.send_keys('buy X')
 
         # User hits enter and page updates and lists '1: buy X' as an item in todo list
+        inputbox.send_keys(Keys.ENTER)
+
+        table = self.browser.find_element_by_id('id_list_table')
+        rows = table.find_elements_by_tag_name('tr')
+        self.assertTrue(any(row.text == '1: buy X' for row in rows))
+
+
+        self.fail('Finish the test!')
 
         # Text box persists and user adds 'sell Y' to it
 
