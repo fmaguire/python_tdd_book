@@ -6,7 +6,10 @@
         <h1>Your todo list</h1>
         <form methoth="POST">
             <input name="item_next" id='id_new_item' placeholder="Enter a todo item" />
+            {% csrf_token %}
         </form>
         <table id='id_list_table'>
+            <tr><td>{{ new_item_text }}</td></tr>
+        </table>
     </body>
 </html>
