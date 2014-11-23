@@ -34,15 +34,21 @@ class NewVisitorTest(unittest.TestCase):
 
         table = self.browser.find_element_by_id('id_list_table')
         rows = table.find_elements_by_tag_name('tr')
-        self.assertTrue(any(row.text == '1: buy X' for row in rows),
-                "New todo item did not appear in table -- its text was:\n "
-                "{0}".format(table.text,))
+        self.assertIn('1: buy X', [row.text for row in rows])
+
+        # Text box persists and user adds 'sell Y' to it
+        inputbox = self.browser.find_element_by_id('id_new_item')
+        inputbox.send_keys('sell Y')
+        inputbox.send_keys(Keys.ENTER)
+
+        table = self.browser.find_element_by_id('id_list_table')
+        rows = table.find_elements_by_tag_name('tr')
+        self.assertIn('1: buy X', [row.text for row in rows])
+        self.assertIn('2: sell Y', [row.text for row in rows])
+
 
 
         self.fail('Finish the test!')
-
-        # Text box persists and user adds 'sell Y' to it
-
         # User presses enter and page updates and now shows both items
 
         # User sees explanatory text that custom url has been generated for her list
