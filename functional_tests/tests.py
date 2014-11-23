@@ -56,7 +56,7 @@ class NewVisitorTest(LiveServerTestCase):
         ## Use a browser session to make sure no information from
         ## User1 is coming through (e.g. cookies)
         self.browser.quit()
-        self.browser.webdriver.Firefox()
+        self.browser = webdriver.Firefox()
 
         # User2 visits home page and can't see User1's list
         self.browser.get(self.live_server_url)
